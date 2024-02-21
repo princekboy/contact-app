@@ -18,25 +18,38 @@
                         <h4 class="bold">REGISTER</h4>
                     </div>
                 </div>
-                <form class="register" style="padding: 0 .75rem">
+                <form class="register" method="POST" action="/users/register" style="padding: 0 .75rem">
+                    @csrf
                     <div class="form-group">
                         <label>Username</label>
-                        <input type="text" autocomplete="username" class="form-input" name="username" id="username" />
+                        <input type="text" value="{{old('username')}}" autocomplete="username" class="form-input" name="username" id="username" />
+                        @error('username')
+                        <p class="error-text">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label>Email address</label>
-                        <input type="email" autocomplete="email" class="form-input" name="email" id="email" />
+                        <input type="email" value="{{old('email')}}" autocomplete="email" class="form-input" name="email" id="email" />
+                        @error('email')
+                        <p class="error-text">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label>Phone number</label>
-                        <input type="text" autocomplete="phone" class="form-input" name="phone" id="phone" />
+                        <input type="text" value="{{old('phone')}}" autocomplete="phone" class="form-input" name="phone" id="phone" />
+                        @error('phone')
+                        <p class="error-text">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" autocomplete="current-password" class="form-input" name="password" id="password" />
+                        <input type="password" value="{{old('password')}}" autocomplete="current-password" class="form-input" name="password" id="password" />
                         <span onclick="showpass('password', 'showpass')" id="showpass" class="showhidebtn" title="Toggle show/hide password">
                             <i class="far fa-eye-slash eye-off"></i>
                         </span>
+                        @error('password')
+                        <p class="error-text">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="center">
                         <button class="button button-primary">REGISTER</button>

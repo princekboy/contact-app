@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,15 @@ Route::get('/signup', function () {
 Route::get('/forgot', function () {
     return view('forgot-password');
 });
+
+//Register user
+Route::post('/users/register', [UserController::class, 'register']);
+
+//Login user
+Route::post('/users/login', [UserController::class, 'loginuser'])->name('name');
+
+//Logout user
+Route::post('/users/logout', [UserController::class, 'logout'])->name('logout');
+
+//Show dashboard
+Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware('auth');

@@ -228,6 +228,26 @@ a:visited {
     color: var(--cyan);
 }
 
+.error-text {
+    color: var(--red);
+    font-size: 11px;
+}
+
+/* Flash Message */
+.flash-wrapper {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px 18px;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+}
+
+.flash-message {
+    color: var(--white);
+    font-size: 13px;
+}
+
 @media (max-width: 1024px) {
     .login-card {
         max-width: 100%;

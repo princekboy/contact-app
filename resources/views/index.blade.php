@@ -18,17 +18,24 @@
                         <h4 class="bold">LOGIN</h4>
                     </div>
                 </div>
-                <form class="" style="padding: 0 .75rem">
+                <form id="loginForm" method="POST" style="padding: 0 .75rem">
+                    @csrf
                     <div class="form-group">
                         <label>Username</label>
-                        <input type="text" autocomplete="username" class="form-input" name="username" id="username" />
+                        <input type="text" value="{{old('username')}}" autocomplete="username" class="form-input" name="username" id="username" />
+                        @error('username')
+                        <p class="error-text">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" autocomplete="current-password" class="form-input" name="password" id="password" />
+                        <input type="password" value="{{old('password')}}" autocomplete="current-password" class="form-input" name="password" id="password" />
                         <span onclick="showpass('password', 'showpass')" id="showpass" class="showhidebtn" title="Toggle show/hide password">
                             <i class="far fa-eye-slash eye-off"></i>
                         </span>
+                        @error('password')
+                        <p class="error-text">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="center">
                         <button class="button button-primary">LOGIN</button>
@@ -42,3 +49,50 @@
         </div>
     </div>
 </x-main>
+<script>
+    $("form#loginForm").submit(function(e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: '/users/login',
+            type: 'POST',
+            data: formData,
+            beforeSend: function() {
+                $(".flash-wrapper").fadeIn();
+                $('.flash-message').html("Please wait... <span class='fas fa-1x fa-spinner fa-spin'></span>");
+            },
+            success: function(data) {
+                var res = $.parseJSON(data);
+                if (res.status == "success") {
+                    $(".flash-wrapper").fadeIn();
+                    $(".flash-message").html(res.response);
+                    setTimeout(' window.location.href = "/dashboard"; ', 3000);
+                    setTimeout(function() {
+                        $(".flash-wrapper").fadeOut();
+                    }, 10000);
+                } else {
+                    $(".flash-wrapper").fadeIn();
+                    $(".flash-message").html(res.response);
+                    setTimeout(function() {
+                        $(".flash-wrapper").fadeOut();
+                    }, 10000);
+                }
+            },
+            cache: false,
+            error: function() {
+                $(".flash-wrapper").fadeIn();
+                $('.flash-message').html("An error has occured!!");
+                setTimeout(function() {
+                    $(".flash-wrapper").fadeOut();
+                }, 10000);
+            },
+            contentType: false,
+            processData: false
+        });
+    });
+</script>
